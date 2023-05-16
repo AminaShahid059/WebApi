@@ -1,0 +1,60 @@
+﻿@page "/Orders"
+@using WEBTASK.Shared;
+@inject HttpClient Http
+
+
+<button @onclick="GetOrders">Ordered List</button>
+
+@if(orders==null)
+{
+    <p>Click to get Order Button to shoe the list of Orders</p>
+
+
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Order</th>
+                <th>Additional</th>
+                <th>Location</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ord in orders)
+            {
+                <tr>
+                    <td>@ord.id</td>
+                    <td>@ord.name</td>
+                    <td>@ord.phone</td>
+                    <td>@ord.order</td>
+                    <td>@ord.additional</td>
+                    <td>@ord.address</td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+@code {
+
+    Order[]? orders;
+
+    async void GetOrders()
+    {
+        orders= await Http.GetFromJsonAsync<Order[]>("/order");
+        StateHasChanged();
+
+    }
+}
